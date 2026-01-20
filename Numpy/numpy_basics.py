@@ -1,0 +1,11 @@
+import numpy as np
+eye_scan=np.array([[1,2],[3,4],[5,6],[7,8]])
+print("matrix")
+print(eye_scan)
+print("shape")
+print(eye_scan.shape)
+print("diamension")
+print(eye_scan.ndim)
+print("black frame")
+black_frame=np.zeros((5,5))
+print(black_frame)
