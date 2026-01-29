@@ -30,6 +30,10 @@ drawn_color = (100,100,100)
 #brush size
 brush_size=2
 
+#kernal for noise reduction
+kernal = np.ones((5,5),np.uint8)
+
+
 
 # loop for live feed and proceesings
 while True:
@@ -38,7 +42,10 @@ while True:
     _,frame=cap.read()
     
     #frame mirror
-    frame=cv2.flip(frame,1)
+    flip_frame=cv2.flip(frame,1)
+    
+    #add gausion blur
+    frame=cv2.GaussianBlur(flip_frame,(3,3),0)
     
     #color conertion to hsv
     hsv_frame=cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
@@ -57,6 +64,15 @@ while True:
     
     #creating mask 
     mask=cv2.inRange(hsv_frame,lower,upper)
+    
+    # noise reduction 
+    
+    mask = cv2.erode(mask,kernal,iterations= 1)
+    
+    mask = cv2.dilate(mask,kernal,iterations=2)
+    
+    
+    
     
     #creating feed for selecting color
     result=cv2.bitwise_and(frame,frame,mask=mask)
@@ -162,6 +178,7 @@ while True:
     #for shoow airbrush window and colour selecting window
     cv2.imshow("result",final_result)
     cv2.imshow("feed",result)
+    cv2.imshow("test",flip_frame)
     
     
     #keys for quit,brush and clean
