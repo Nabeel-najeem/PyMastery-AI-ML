@@ -19,7 +19,7 @@ def reorder(myPoints):
     return myPointsNew
 
 #Accesing web cam
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 #size of detection
 width, height = 480,640
@@ -45,6 +45,8 @@ while True :
     matrix = None
     
     imgout = np.zeros((height,width,3), dtype=np.uint8)
+    imgThres = np.zeros((height, width), dtype=np.uint8)
+
     
     
     #finding contours
@@ -62,13 +64,17 @@ while True :
                 matrix = cv2.getPerspectiveTransform(pts1,pts2)
     if matrix is not None :
         imgout = cv2.warpPerspective(frame,matrix,(width,height))
+        
+        imgGray = cv2.cvtColor(imgout, cv2.COLOR_BGR2GRAY)
+        imgThres = cv2.adaptiveThreshold(imgGray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
+        imgThres = cv2.medianBlur(imgThres, 3)
                 
     
     
     
     #preview
     cv2.imshow("test",frame)
-    cv2.imshow("warped",imgout)
+    cv2.imshow("warped",imgThres)
     
     #key input
     key = cv2.waitKey(1) & 0xFF 
