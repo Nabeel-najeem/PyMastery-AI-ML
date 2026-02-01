@@ -3,7 +3,7 @@ import math
 import  mediapipe as mp
 from fontTools.misc.cython import returns
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands()
 mp_drawing = mp.solutions.drawing_utils
