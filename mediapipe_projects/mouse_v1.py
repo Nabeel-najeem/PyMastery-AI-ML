@@ -12,6 +12,9 @@ wh = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
 cx4,cy4,cx8,cy8 = 0,0,0,0
 
+px, py = 0,0
+smooh_factor  = 7
+
 
 
 
@@ -42,8 +45,13 @@ while True :
                     x_mouse = np.interp(cx8,[0,ww],[0,sw])
                     y_mouse = np.interp(cy8,[0,wh],[0,sh])
                     cv2.putText(frame,f"{x_mouse} {y_mouse}",(100,100),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
-                    if 100 < x_mouse < 1100 and 100 < y_mouse < 600 :
-                        cv2.circle(frame,(int(x_mouse),int(y_mouse)),3,(0,255,255),cv2.FILLED)
+                    scx ,scy = px+(x_mouse-px)/smooh_factor,py+(y_mouse-py)/smooh_factor
+                    px, py = scx,scy
+                    if 100 < scx < 1100 and 100 < scy < 600 :
+                        cv2.circle(frame,(int(scx),int(scy)),3,(0,255,0),cv2.FILLED)
+                        cv2.circle(frame,(int(x_mouse),int(y_mouse)),3,(0,0,255),cv2.FILLED)
+                        cv2.putText(frame,f"{scx} {scy}",(100,200),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
+
                 if cx4 and cx8 :
                     distance = math.hypot(cx8-cx4, cy8-cy8)
                     if distance < 20 :
