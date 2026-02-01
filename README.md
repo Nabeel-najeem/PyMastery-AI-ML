@@ -33,7 +33,7 @@ This repository is a live log of my daily consistency in Python and AI developme
 | **Day 14** | Jan 29 | **Advanced CV:** Noise reduction, Edge detection, and Air Brush v2. |
 | **Day 15** | Jan 30 | **Hardware Integration:** Basic Webcam access and frame processing. |
 | **Day 16** | Jan 31 | **Gesture Control:** Index/Thumb tracking and screen positioning. |
-| **Day 17** | Feb 01 | **System Documentation:** Restructuring log for the infinite journey. |
+| **Day 18** | Feb 01 | **AI Landmarks:** MediaPipe Hand tracking & Adaptive EMA Smoothing logic. |
 
 ---
 
