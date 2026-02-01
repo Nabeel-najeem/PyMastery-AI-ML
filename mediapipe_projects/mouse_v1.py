@@ -3,6 +3,8 @@ import mediapipe as mp
 import numpy as np
 import math
 
+def empth(x):
+    pass
 cap = cv2.VideoCapture(0)
 hands = mp.solutions.hands
 hand = hands.Hands()
@@ -15,13 +17,19 @@ cx4,cy4,cx8,cy8 = 0,0,0,0
 px, py = 0,0
 #smooh_factor  = 6
 
-alpha = 0.5
+alpha = 0.0
 dead_zone = 5
 
+cv2.namedWindow("smothening alpha")
+cv2.resizeWindow("smothening alpha",300,75)
+cv2.createTrackbar("alpha value","smothening alpha",0,100,empth)
 
 
 
 while True :
+    T_alpha = cv2.getTrackbarPos("alpha value","smothening alpha")
+    alpha = T_alpha / 100
+
     _,frame=cap.read()
     if not _ :
         print("cam not found")
