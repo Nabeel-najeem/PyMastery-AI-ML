@@ -2,10 +2,11 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import math
+import pyautogui as pag
 
 def empth(x):
     pass
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 hands = mp.solutions.hands
 hand = hands.Hands()
 drawing_util = mp.solutions.drawing_utils
@@ -32,6 +33,8 @@ cv2.createTrackbar("alpha value","smothening alpha",0,100,empth)
 while True :
     """T_alpha = cv2.getTrackbarPos("alpha value","smothening alpha")
     alpha = T_alpha / 100"""
+
+    screen_w , screen_h = pag.size()
 
     _,frame=cap.read()
     if not _ :
@@ -69,6 +72,9 @@ while True :
                 scx = (alpha*x_mouse) + ((1-alpha)*px)
                 scy = (alpha*y_mouse) + ((1-alpha)*py)
 
+                actual_x = np.interp(scx,(100,1100),(0,screen_w))
+                actual_y = np.interp(scy,(100,600),(0,screen_h))
+
                 movement_dist = math.hypot(x_mouse-px, y_mouse-py)
                 if movement_dist < dead_zone :
                     scx, scy = px, py
@@ -87,6 +93,8 @@ while True :
                 distance = math.hypot(cx8-cx4, cy8-cy4)
                 if distance < 20 :
                     cv2.putText(frame,"click",(1100,200),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
+                    pag.click()
+            pag.moveTo(actual_x,actual_y)
 
     cv2.rectangle(frame,(100,100),(1100,600),(0,0,255),2)
 
