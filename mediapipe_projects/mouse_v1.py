@@ -6,7 +6,7 @@ import pyautogui as pag
 
 def empth(x):
     pass
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 hands = mp.solutions.hands
 hand = hands.Hands()
 drawing_util = mp.solutions.drawing_utils
@@ -54,13 +54,23 @@ while True :
 
                 if id == 4 :
                     cx4,cy4 = cx, cy
-                    #cv2.circle(frame,(cx4,cy4),3,(0,0,255),cv2.FILLED)
+                    cv2.circle(frame,(cx4,cy4),3,(0,0,255),cv2.FILLED)
                 elif id == 8 :
                     cx8,cy8 = cx, cy
-                    #cv2.circle(frame,(cx8,cy8),3,(0,255,0),cv2.FILLED)
 
                 elif id == 12 :
                     cx12, cy12 = cx, cy
+                    cv2.circle(frame,(cx12,cy12),3,(255,255,0),cv2.FILLED)
+
+
+                elif id == 0 :
+                    cx0, cy0 = cx, cy
+
+                elif id == 9 :
+                    cx9, cy9 = cx, cy
+
+
+
 
             if cx4 !=0 and cx8!=0 :
                 x_mouse = np.interp(cx8,[0,ww],[0,sw])
@@ -93,20 +103,27 @@ while True :
                     cv2.circle(frame,(int(scx),int(scy)),3,(0,255,0),cv2.FILLED)
                     cv2.putText(frame,f"{scx} {scy}",(100,200),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
 
+            ref_dist = math.hypot(cx9-cx0, cy9-cy0)
+            dynamic_treshold = ref_dist * 0.17
+            mouse_dynamic_treshold = ref_dist * 0.22
+            cv2.putText(frame,f"n-{dynamic_treshold}",(300,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
+            cv2.putText(frame,f"m-{mouse_dynamic_treshold}",(300,400),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
+
+
             if cx4 and cx8 :
                 distance = math.hypot(cx8-cx4, cy8-cy4)
-                if distance < 20 :
+                if distance < dynamic_treshold :
                     cv2.putText(frame,"click",(1100,200),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
                     pag.click()
 
             if cx4 and cx12 :
                 distance = math.hypot(cx12-cx4, cy12-cy4)
-                if distance < 20 :
+                if distance < dynamic_treshold :
                     pag.rightClick()
 
             if cx8 and cx12 :
                 distance = math.hypot(cx12-cx8, cy12-cy8)
-                if distance < 30 :
+                if distance < mouse_dynamic_treshold:
                     cv2.putText(frame,"scrool",(1100,500),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
                     scroll_amount = (y_mouse-py)*2
                     if abs(scroll_amount) > 2 :
