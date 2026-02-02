@@ -107,8 +107,7 @@ while True :
             dynamic_treshold = ref_dist * 0.17
             mouse_dynamic_treshold = ref_dist * 0.22
             cv2.putText(frame,f"n-{dynamic_treshold}",(300,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
-            cv2.putText(frame,f"m-{mouse_dynamic_treshold}",(300,400),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
-
+            cv2.putText(frame, f"m-{mouse_dynamic_treshold}", (300, 400), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
             if cx4 and cx8 :
                 distance = math.hypot(cx8-cx4, cy8-cy4)
