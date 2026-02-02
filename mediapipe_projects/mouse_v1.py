@@ -6,7 +6,7 @@ import pyautogui as pag
 
 def empth(x):
     pass
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 hands = mp.solutions.hands
 hand = hands.Hands()
 drawing_util = mp.solutions.drawing_utils
@@ -24,6 +24,8 @@ min_alpha = 0.05
 max_alpha = 0.9
 dead_zone = 5
 
+screen_w, screen_h = pag.size()
+
 """cv2.namedWindow("smothening alpha")
 cv2.resizeWindow("smothening alpha",300,75)
 cv2.createTrackbar("alpha value","smothening alpha",0,100,empth)
@@ -34,7 +36,6 @@ while True :
     """T_alpha = cv2.getTrackbarPos("alpha value","smothening alpha")
     alpha = T_alpha / 100"""
 
-    screen_w , screen_h = pag.size()
 
     _,frame=cap.read()
     if not _ :
@@ -57,6 +58,9 @@ while True :
                 elif id == 8 :
                     cx8,cy8 = cx, cy
                     #cv2.circle(frame,(cx8,cy8),3,(0,255,0),cv2.FILLED)
+
+                elif id == 12 :
+                    cx12, cy12 = cx, cy
 
             if cx4 !=0 and cx8!=0 :
                 x_mouse = np.interp(cx8,[0,ww],[0,sw])
@@ -94,8 +98,13 @@ while True :
                 if distance < 20 :
                     cv2.putText(frame,"click",(1100,200),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
                     pag.click()
-            pag.moveTo(actual_x,actual_y)
 
+            if cx4 and cx12 :
+                distance = math.hypot(cx12-cx4, cy12-cy4)
+                if distance < 20 :
+                    pag.rightClick()
+
+            pag.moveTo(actual_x,actual_y)
     cv2.rectangle(frame,(100,100),(1100,600),(0,0,255),2)
 
 
