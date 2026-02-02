@@ -104,6 +104,14 @@ while True :
                 if distance < 20 :
                     pag.rightClick()
 
+            if cx8 and cx12 :
+                distance = math.hypot(cx12-cx8, cy12-cy8)
+                if distance < 30 :
+                    cv2.putText(frame,"scrool",(1100,500),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
+                    scroll_amount = (y_mouse-py)*2
+                    if abs(scroll_amount) > 2 :
+                        pag.scroll(-int(scroll_amount))
+
             pag.moveTo(actual_x,actual_y)
     cv2.rectangle(frame,(100,100),(1100,600),(0,0,255),2)
 
