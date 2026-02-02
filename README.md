@@ -34,6 +34,7 @@ This repository is a live log of my daily consistency in Python and AI developme
 | **Day 15** | Jan 30 | **Hardware Integration:** Basic Webcam access and frame processing. |
 | **Day 16** | Jan 31 | **Gesture Control:** Index/Thumb tracking and screen positioning. |
 | **Day 18** | Feb 01 | **AI Landmarks:** MediaPipe Hand tracking & Adaptive EMA Smoothing logic. |
+| **Day 19** | Feb 01 | **OS Integration & Depth Scaling :** Multi-click gestures, adaptive scroll, and dynamic depth-aware thresholds. |
 
 ---
 

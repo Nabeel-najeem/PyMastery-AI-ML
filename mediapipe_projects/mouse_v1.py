@@ -6,7 +6,7 @@ import pyautogui as pag
 
 def empth(x):
     pass
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 hands = mp.solutions.hands
 hand = hands.Hands()
 drawing_util = mp.solutions.drawing_utils
