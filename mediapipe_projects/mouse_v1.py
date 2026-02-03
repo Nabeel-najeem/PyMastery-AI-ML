@@ -27,6 +27,8 @@ dead_zone = 5
 screen_w, screen_h = pag.size()
 is_draging = False
 
+click_hold_frames = 0
+
 
 """
 cv2.namedWindow("ratio for window")
@@ -35,9 +37,9 @@ cv2.createTrackbar("ratio value","ratio for window",1,100,empth)
 
 """
 
+pag.PAUSE = 0
 while True :
 
-    pag.PAUSE = 0
 
     m_ratio = 4.5#cv2.getTrackbarPos("ratio value","ratio for window")
     ratio_x = 1 * m_ratio
@@ -123,38 +125,56 @@ while True :
                     cv2.circle(frame,(int(scx),int(scy)),3,(0,255,0),cv2.FILLED)
                     cv2.putText(frame,f"{scx} {scy}",(100,200),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
 
-            dynamic_treshold = ref_dist * 0.18
+            dynamic_treshold = ref_dist * 0.22
             mouse_dynamic_treshold = ref_dist * 0.27
 
 
             cv2.putText(frame,f"n-{dynamic_treshold}",(300,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
             cv2.putText(frame, f"m-{mouse_dynamic_treshold}", (300, 400), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            #issue part ---
+            if cx4 and cx8 and cx12:
+                d1 = math.hypot(cx8-cx4, cy8-cy4)
+                d2 = math.hypot(cx12-cx4, cy12-cy4)
+                d3 = math.hypot(cx12-cx8, cy12-cy8)
+                drag_distance = (d1+d2+d3)/3
+                treshold_for_3_finger =  ref_dist /6
+                cv2.putText(frame, f"3 - {treshold_for_3_finger}", (350, 350), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
-            if cx4 and cx8 :
-                distance = math.hypot(cx8-cx4, cy8-cy4)
-                if distance < dynamic_treshold :
-                    if not is_draging :
+
+                if drag_distance < treshold_for_3_finger:
+                    click_hold_frames += 1
+                    if click_hold_frames == 6 and not is_draging:
                         pag.mouseDown()
                         is_draging = True
-                    cv2.putText(frame,"click",(1100,200),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
-                else :
-                    if is_draging :
+                else:
+                    if is_draging:
                         pag.mouseUp()
                         is_draging = False
-                    #pag.click()
-
-            if cx4 and cx12 :
-                distance = math.hypot(cx12-cx4, cy12-cy4)
-                if distance < dynamic_treshold :
+                    click_hold_frames = 0
+                if is_draging:
+                    cv2.putText(frame, "DRAGGING...", (500, 400), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 3)
+            #--------------------
+            if cx4 and cx12 and not is_draging:
+                right_distance = math.hypot(cx12-cx4, cy12-cy4)
+                if right_distance < dynamic_treshold :
                     pag.rightClick()
+            #--------------------
 
-            if cx8 and cx12 :
-                distance = math.hypot(cx12-cx8, cy12-cy8)
-                if distance < mouse_dynamic_treshold:
+            if cx8 and cx12 and not is_draging:
+                scroll_distance = math.hypot(cx12-cx8, cy12-cy8)
+                if scroll_distance < mouse_dynamic_treshold:
                     cv2.putText(frame,"scrool",(1100,500),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
                     scroll_amount = (y_mouse-py)*2
                     if abs(scroll_amount) > 2 :
                         pag.scroll(-int(scroll_amount))
+            #--------------------
+            if cx4 and cx8 and not is_draging:
+                distance = math.hypot(cx8-cx4, cy8-cy4)
+            tap_threshold = dynamic_treshold*0.7
+            if distance < tap_threshold and not is_draging:
+                pag.click()
+                cv2.putText(frame,"click",(1100,500),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
+            #----
 
             pag.moveTo(actual_x,actual_y)
             if is_draging == False :
