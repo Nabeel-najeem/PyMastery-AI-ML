@@ -6,7 +6,7 @@ import pyautogui as pag
 
 def empth(x):
     pass
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 hands = mp.solutions.hands
 hand = hands.Hands()
 drawing_util = mp.solutions.drawing_utils
@@ -27,15 +27,15 @@ dead_zone = 5
 screen_w, screen_h = pag.size()
 
 
-
+"""
 cv2.namedWindow("ratio for window")
 cv2.resizeWindow("ratio for window",300,75)
 cv2.createTrackbar("ratio value","ratio for window",1,100,empth)
 
-
+"""
 
 while True :
-    m_ratio = cv2.getTrackbarPos("ratio value","ratio for window")
+    m_ratio = 4.5#cv2.getTrackbarPos("ratio value","ratio for window")
     ratio_x = 1 * m_ratio
     ration_y = 0.5625 * m_ratio
 
@@ -99,16 +99,11 @@ while True :
 
 
 
-
-
-
-
-
                 scx = (alpha*x_mouse) + ((1-alpha)*px)
                 scy = (alpha*y_mouse) + ((1-alpha)*py)
 
-                actual_x = np.interp(scx,(100,1100),(0,screen_w))
-                actual_y = np.interp(scy,(100,600),(0,screen_h))
+                actual_x = np.interp(scx,(box_x1,box_x2),(0,screen_w))
+                actual_y = np.interp(scy,(box_y1,box_y2),(0,screen_h))
 
                 movement_dist = math.hypot(x_mouse-px, y_mouse-py)
                 if movement_dist < dead_zone :
@@ -150,7 +145,7 @@ while True :
                     if abs(scroll_amount) > 2 :
                         pag.scroll(-int(scroll_amount))
 
-            #pag.moveTo(actual_x,actual_y)
+            pag.moveTo(actual_x,actual_y)
             cv2.rectangle(frame,(box_x1,box_y1),(box_x2,box_y2),(0,0,255),2)
 
 
