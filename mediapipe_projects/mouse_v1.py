@@ -6,7 +6,7 @@ import pyautogui as pag
 
 def empth(x):
     pass
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 hands = mp.solutions.hands
 hand = hands.Hands()
 drawing_util = mp.solutions.drawing_utils
@@ -26,15 +26,18 @@ dead_zone = 5
 
 screen_w, screen_h = pag.size()
 
-"""cv2.namedWindow("smothening alpha")
-cv2.resizeWindow("smothening alpha",300,75)
-cv2.createTrackbar("alpha value","smothening alpha",0,100,empth)
-"""
+
+
+cv2.namedWindow("ratio for window")
+cv2.resizeWindow("ratio for window",300,75)
+cv2.createTrackbar("ratio value","ratio for window",1,100,empth)
+
 
 
 while True :
-    """T_alpha = cv2.getTrackbarPos("alpha value","smothening alpha")
-    alpha = T_alpha / 100"""
+    m_ratio = cv2.getTrackbarPos("ratio value","ratio for window")
+    ratio_x = 1 * m_ratio
+    ration_y = 0.5625 * m_ratio
 
 
     _,frame=cap.read()
@@ -71,16 +74,34 @@ while True :
 
 
 
-
             if cx4 !=0 and cx8!=0 :
                 x_mouse = np.interp(cx8,[0,ww],[0,sw])
                 y_mouse = np.interp(cy8,[0,wh],[0,sh])
+
                 cv2.putText(frame,f"{x_mouse} {y_mouse}",(100,100),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
                 #scx ,scy = px+(x_mouse-px)/smooh_factor,py+(y_mouse-py)/smooh_factor
 
                 velocity = math.hypot(x_mouse-px, y_mouse-py)
                 alpha = np.interp(velocity, [0, 50], [min_alpha, max_alpha])
                 cv2.putText(frame,f"{alpha}",(800,100),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
+
+                ref_dist = math.hypot(cx9-cx0, cy9-cy0)
+
+                center_x, center_y = sw//2, sh//2
+                cv2.circle(frame, (center_x, center_y), 3, (1, 1, 1), cv2.FILLED)
+                cv2.putText(frame,f"{sw}   {sh}",(500,600),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
+
+                bound_w = int(ref_dist*ratio_x)
+                bound_h = int(ref_dist*ration_y)
+
+                box_x1, box_x2 = center_x - bound_w//2, center_x + bound_w//2
+                box_y1, box_y2 = center_y - bound_h//2, center_y + bound_h//2
+
+
+
+
+
+
 
 
                 scx = (alpha*x_mouse) + ((1-alpha)*px)
@@ -103,9 +124,10 @@ while True :
                     cv2.circle(frame,(int(scx),int(scy)),3,(0,255,0),cv2.FILLED)
                     cv2.putText(frame,f"{scx} {scy}",(100,200),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
 
-            ref_dist = math.hypot(cx9-cx0, cy9-cy0)
-            dynamic_treshold = ref_dist * 0.17
-            mouse_dynamic_treshold = ref_dist * 0.22
+            dynamic_treshold = ref_dist * 0.18
+            mouse_dynamic_treshold = ref_dist * 0.27
+
+
             cv2.putText(frame,f"n-{dynamic_treshold}",(300,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
             cv2.putText(frame, f"m-{mouse_dynamic_treshold}", (300, 400), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
@@ -128,8 +150,8 @@ while True :
                     if abs(scroll_amount) > 2 :
                         pag.scroll(-int(scroll_amount))
 
-            pag.moveTo(actual_x,actual_y)
-    cv2.rectangle(frame,(100,100),(1100,600),(0,0,255),2)
+            #pag.moveTo(actual_x,actual_y)
+            cv2.rectangle(frame,(box_x1,box_y1),(box_x2,box_y2),(0,0,255),2)
 
 
     cv2.imshow("frame",frame)
