@@ -6,7 +6,7 @@ import pyautogui as pag
 
 def empth(x):
     pass
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 hands = mp.solutions.hands
 hand = hands.Hands()
 drawing_util = mp.solutions.drawing_utils
@@ -25,6 +25,7 @@ max_alpha = 0.9
 dead_zone = 5
 
 screen_w, screen_h = pag.size()
+is_draging = False
 
 
 """
@@ -35,6 +36,9 @@ cv2.createTrackbar("ratio value","ratio for window",1,100,empth)
 """
 
 while True :
+
+    pag.PAUSE = 0
+
     m_ratio = 4.5#cv2.getTrackbarPos("ratio value","ratio for window")
     ratio_x = 1 * m_ratio
     ration_y = 0.5625 * m_ratio
@@ -129,8 +133,15 @@ while True :
             if cx4 and cx8 :
                 distance = math.hypot(cx8-cx4, cy8-cy4)
                 if distance < dynamic_treshold :
+                    if not is_draging :
+                        pag.mouseDown()
+                        is_draging = True
                     cv2.putText(frame,"click",(1100,200),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
-                    pag.click()
+                else :
+                    if is_draging :
+                        pag.mouseUp()
+                        is_draging = False
+                    #pag.click()
 
             if cx4 and cx12 :
                 distance = math.hypot(cx12-cx4, cy12-cy4)
@@ -146,7 +157,13 @@ while True :
                         pag.scroll(-int(scroll_amount))
 
             pag.moveTo(actual_x,actual_y)
-            cv2.rectangle(frame,(box_x1,box_y1),(box_x2,box_y2),(0,0,255),2)
+            if is_draging == False :
+                color = 0,0,255
+            elif is_draging == True :
+                color = 0,255,255
+
+
+            cv2.rectangle(frame,(box_x1,box_y1),(box_x2,box_y2),(color),2)
 
 
     cv2.imshow("frame",frame)
