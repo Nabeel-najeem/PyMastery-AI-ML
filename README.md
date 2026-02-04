@@ -36,6 +36,7 @@ This repository is a live log of my daily consistency in Python and AI developme
 | **Day 18** | Feb 01 | **AI Landmarks:** MediaPipe Hand tracking & Adaptive EMA Smoothing logic. |
 | **Day 19** | Feb 02 | **OS Integration & Depth Scaling :** Multi-click gestures, adaptive scroll, and dynamic depth-aware thresholds. |
 | **Day 20** | Feb 03 | **Advanced HID :** Dynamic Interaction Zone scaling & State-based Drag-and-Drop logic.. |
+| **Day 21** | Feb 04 | **skip:** skip |
 
 ---
 
