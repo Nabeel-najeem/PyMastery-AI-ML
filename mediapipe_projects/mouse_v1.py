@@ -3,11 +3,10 @@ import mediapipe as mp
 import numpy as np
 import math
 import pyautogui as pag
-import time
 
 def empth(x):
     pass
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 hands = mp.solutions.hands
 hand = hands.Hands()
 drawing_util = mp.solutions.drawing_utils
@@ -21,20 +20,12 @@ px, py = 0,0
 
 alpha = 6
 
-actual_x,actual_y=0,0
-
 min_alpha = 0.05
 max_alpha = 0.9
 dead_zone = 5
 
 screen_w, screen_h = pag.size()
-
-pinch_timer = 0
-is_dragging = False
-
-click_hold_frames = 0
-
-
+is_draging = False
 
 
 """
@@ -43,11 +34,6 @@ cv2.resizeWindow("ratio for window",300,75)
 cv2.createTrackbar("ratio value","ratio for window",1,100,empth)
 
 """
-
-last_click_time = 0
-click_delay   = 0.3
-
-
 
 pag.PAUSE = 0
 while True :
@@ -137,77 +123,77 @@ while True :
                     cv2.circle(frame,(int(scx),int(scy)),3,(0,255,0),cv2.FILLED)
                     cv2.putText(frame,f"{scx} {scy}",(100,200),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
 
-            dynamic_treshold = ref_dist * 0.22
-            mouse_dynamic_treshold = ref_dist * 0.27
+            dynamic_treshold = ref_dist * 0.18
+            scroll_dynamic_treshold = ref_dist * 0.27
+            drag_dynamic_treshold = ref_dist * 0.28
 
 
             cv2.putText(frame,f"n-{dynamic_treshold}",(300,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
-            cv2.putText(frame, f"m-{mouse_dynamic_treshold}", (300, 400), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-            #issue part ---
-            """if cx4 and cx8 and cx12:
-                d1 = math.hypot(cx8-cx4, cy8-cy4)
-                d2 = math.hypot(cx12-cx4, cy12-cy4)
-                d3 = math.hypot(cx12-cx8, cy12-cy8)
-                drag_distance = (d1+d2+d3)/3
-                treshold_for_3_finger =  ref_dist /6
-                cv2.putText(frame, f"3 - {treshold_for_3_finger}", (350, 350), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-"""
+            cv2.putText(frame, f"m-{scroll_dynamic_treshold}", (300, 400), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
-            # -------- DRAG MODE ONLY (no clicks yet) --------
-            # --- 1. Proportional Thresholds (Calculated every frame) ---
-            ref_dist = math.hypot(cx9 - cx0, cy9 - cy0)
-            click_thresh = ref_dist * 0.20  # Sensitivity for Left/Right click
-            scroll_thresh = ref_dist * 0.25  # Sensitivity for Scroll mode
+           #distance calculations -----
+            thumb_index = math.hypot(cx8-cx4, cy8-cy4)
+            middle_thumb = math.hypot(cx12-cx4, cy12-cy4)
+            index_middle = math.hypot(cx12-cx8, cy12-cy8)
+            drag_distance = (thumb_index+middle_thumb+index_middle)/3
 
-            # --- 2. Distance Calculations ---
-            dist_thumb_index = math.hypot(cx8 - cx4, cy8 - cy4)
-            dist_thumb_middle = math.hypot(cx12 - cx4, cy12 - cy4)
-            dist_index_middle = math.hypot(cx12 - cx8, cy12 - cy8)
 
-            # --- 3. THE GESTURE ENGINE (Mutually Exclusive) ---
-
-            # A. SCROLL MODE (Index & Middle fingers together)
-            if dist_index_middle < scroll_thresh and not is_dragging:
-                status = "SCROLLING"
-                scroll_amount = (y_mouse - py) * 2
-                if abs(scroll_amount) > 3:
-                    pag.scroll(-int(scroll_amount))
-                cv2.putText(frame, "SCROLL", (1100, 500), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
-
-            # B. DRAG & CLICK MODE (Thumb & Index)
-            elif dist_thumb_index < click_thresh:
-                pinch_timer += 1
-                if pinch_timer > 10 and not is_dragging:
-                    pag.mouseDown()
-                    is_dragging = True
-                status = "DRAGGING" if is_dragging else "PINCHING"
-
-            # C. RIGHT CLICK (Thumb & Middle)
-            elif dist_thumb_middle < click_thresh and not is_dragging:
-                pag.rightClick()
-                status = "RIGHT CLICK"
-                pinch_timer = 0  # Reset timer so it doesn't trigger a left click
-
-            # D. RELEASE / IDLE STATE
-            else:
-                # If we were pinching but released quickly -> Single Click
-                if 1 < pinch_timer <= 10:
+           #click-----
+            if cx4 and cx8 and cx12 :
+                #left click
+                if thumb_index < dynamic_treshold and middle_thumb > dynamic_treshold and index_middle > dynamic_treshold:
+                    cv2.putText(frame,"left click",(1100,200),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
                     pag.click()
-                    status = "CLICK"
+               #right click
+                if thumb_index > dynamic_treshold and middle_thumb < dynamic_treshold and index_middle > dynamic_treshold:
+                    cv2.putText(frame,"right click",(1100,200),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
+                    pag.rightClick()
+                #scrol
+                if thumb_index > dynamic_treshold and middle_thumb > dynamic_treshold and index_middle < scroll_dynamic_treshold:
+                    cv2.putText(frame, "scrool", (1100, 200), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+                    scroll_amount = (y_mouse - py) * 2
+                    if abs(scroll_amount) > 2:
+                        pag.scroll(-int(scroll_amount))
+                #drag and drop
+                if drag_distance < drag_dynamic_treshold :
+                    if not is_draging:
+                        pag.mouseDown()
+                        is_draging = True
+                        cv2.putText(frame, "DRAG START", (1100, 200),
+                                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
-                # If we were dragging and released -> Mouse Up
-                if is_dragging:
-                    pag.mouseUp()
-                    is_dragging = False
-                    status = "DROP"
 
-                pinch_timer = 0
-                status = "IDLE"
+                    pag.moveTo(actual_x, actual_y)
 
-            # Apply the status to the screen
-            cv2.putText(frame, f"MODE: {status}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)#----
+                else :
+                        if is_draging:
+                            pag.mouseUp()
+                            is_draging = False
+                            cv2.putText(frame, "DROP", (1100, 200),cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0),2)
 
+
+                '''if not is_draging :
+                        pag.mouseDown()
+                        is_draging = True
+                else :
+                    if is_draging :
+                        pag.mouseUp()
+                        is_draging = False
+                    #pag.click()
+
+            if cx4 and cx12 :
+                distance = math.hypot(cx12-cx4, cy12-cy4)
+                if distance < dynamic_treshold :
+                    pag.rightClick()
+
+            if cx8 and cx12 :
+                distance = math.hypot(cx12-cx8, cy12-cy8)
+                '''
+        if not is_draging :
             pag.moveTo(actual_x,actual_y)
+
+        if cx4 and cx8 and cx12 :
+            cv2.rectangle(frame,(box_x1,box_y1),(box_x2,box_y2),(0,0,255),2)
             if is_draging == False :
                 color = 0,0,255
             elif is_draging == True :
@@ -223,7 +209,4 @@ while True :
 
 cap.release()
 cv2.destroyAllWindows()
-
-
-
 
