@@ -40,6 +40,7 @@ This repository is a live log of my daily consistency in Python and AI developme
 | **Day 22** | Feb 05 | **Project Complete :** Finalized Hand-Controlled Mouse with gesture isolation and stable Drag-and-Drop state logic. |
 | **Day 23** | Feb 06 | **face mesh :** face mesh started. |
 | **Day 24** | Feb 07 | **Face Mesh Foundation:** Implemented real-time landmark detection and isolated drawing for Iris, Contours, and Nose features. |
+| **Day 25** | Feb 08 | **Modular Transition:** Migrated Face Mesh logic into an OOP-based engine for scale-invariant iris tracking. |
 
 ---
 
