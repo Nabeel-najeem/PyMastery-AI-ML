@@ -41,6 +41,7 @@ This repository is a live log of my daily consistency in Python and AI developme
 | **Day 23** | Feb 06 | **face mesh :** face mesh started. |
 | **Day 24** | Feb 07 | **Face Mesh Foundation:** Implemented real-time landmark detection and isolated drawing for Iris, Contours, and Nose features. |
 | **Day 25** | Feb 08 | **Modular Transition:** Migrated Face Mesh logic into an OOP-based engine for scale-invariant iris tracking. |
+| **Day 26** | Feb 09 | **Modular Transition:** Successfully implemented OOP-based face_detector and established main.py as the project index. |
 
 ---
 
