@@ -21,14 +21,23 @@ class face_detector:
                 face_data.append(face_lms.landmark)
         return face_data
 
-    def find_pupils(self,frame):
+    def x_y_landmarks(self,frame,id):
+        h,w,_ = frame.shape
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         results = self.face_mesh.process(rgb_frame)
         if results.multi_face_landmarks :
-            for face_lms in results.multi_face_landmarks :
-                right = face_lms.landmark[468]
+            face_lms = results.multi_face_landmarks[0]
 
-        return right
+            lm = face_lms.landmark[id]
+
+            x = int(lm.x*w)
+            y = int(lm.y*h)
+
+            return x,y
+        return None,None
+
+
+
 
 
 
