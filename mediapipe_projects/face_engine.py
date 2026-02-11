@@ -25,24 +25,38 @@ class face_detector:
 
 
     def x_y_landmarks(self,frame,id):
-        if self.curent_landmarks :
-            h,w,_ = frame.shape
-            lm = self.curent_landmarks[id]
-            x = int(lm.x*w)
-            y = int(lm.y*h)
-            return x,y
-        return None,None
+        if self.curent_landmarks is None :
+            return None,None
+        h,w,_ = frame.shape
+        lm = self.curent_landmarks[id]
+        x = int(lm.x*w)
+        y = int(lm.y*h)
+        return x,y
+
 
     def dynamic_treshold(self,frame):
         fhx,fhy = self.x_y_landmarks(frame,10)
         lhx,lhy = self.x_y_landmarks(frame,103)
         rhx,rhy = self.x_y_landmarks(frame,332)
+
+        if None in [lhx,lhy,rhx,rhy,fhx,fhy]:
+            return None
         dis_fh_lh = math.hypot(fhx-lhx,fhy-lhy)
         dis_lh_rh = math.hypot(lhx-rhx,fhy-rhy)
         dis_fh_rh = math.hypot(fhx-rhx,fhy-lhy)
 
-        treshold = ((dis_fh_rh+ dis_fh_lh+ dis_lh_rh)/3)/9
+        treshold = ((dis_fh_rh+ dis_fh_lh+ dis_lh_rh)/3)/9.7
         return treshold
+
+    def click (self,frame, id_1, id_2):
+        id_1x, id_1y = self.x_y_landmarks(frame,id_1)
+        id_2x, id_2y = self.x_y_landmarks(frame,id_2)
+        if id_1x is not None and id_2x is not None:
+            dis_btw_id1_id2 = math.hypot(id_1x - id_2x, id_1y - id_2y)
+            return dis_btw_id1_id2
+        return None
+
+
 
 
 
