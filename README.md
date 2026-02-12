@@ -44,6 +44,7 @@ This repository is a live log of my daily consistency in Python and AI developme
 | **Day 26** | Feb 09 | **Modular Transition:** Successfully implemented OOP-based face_detector and established main.py as the project index. |
 | **Day 27** | Feb 10 | **Face-Mouse Logic:** Integrated Dynamic Thresholding based on cranial width. Implemented bilateral Blink Detection (EAR-lite). |
 | **Day 28** | Feb 11 | **Modular Architecture Finalized :** Completed the Face Engine and Adaptive Signal Processor with dual-eye stabilization. |
+| **Day 29** | Feb 12 | **3D Calibration Complete :** Integrated Deapth_caliibration with dual-plane (Near/Far) logic. Successfully mapped pupil movement to 1080p screen coordinates using depth-adjusted scaling. |
 
 ---
 
