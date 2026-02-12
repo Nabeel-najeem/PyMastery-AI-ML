@@ -1,19 +1,30 @@
 import cv2
+import numpy as np
 import pyautogui as pag
 
 import face_engine as fe
 import signal_processor as sp
+import calibration as cl
 
 cap = cv2.VideoCapture(0)
 
 ww = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
 wh = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
 screen_w, screen_h = pag.size()
+print(screen_w, screen_h)
+
+calib_points = [(100,100),(screen_w-100,100),(100,screen_h-100),(screen_w-100,screen_h-100)]
+
+f=0
+n=0
+
 
 
 detector = fe.face_detector()
 smooth_r = sp.smoother()
 smooth_l = sp.smoother()
+calib = cl.Deapth_caliibration()
+
 
 while True:
     success,frame = cap.read()
@@ -29,6 +40,20 @@ while True:
     if xr is not None and yr is not None:
         cv2.circle(frame, (xr, yr), 3, (0, 0, 255), cv2.FILLED)
         cv2.circle(frame, (xl, yl), 3, (0, 0, 255), cv2.FILLED)
+
+    if  n<=3 or   f<=3 :
+        cv2.putText(frame, f"calibration required", (300, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+        if calib.calib_mode == 'Near' :
+            cv2.putText(frame, f"sit near to {calib.calib_mode} to camera and press 'n' to calibrate", (300, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            if n <= 3 :
+                cv2.putText(frame, f"{calib_points[n]}", (300, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+                pag.moveTo(calib_points[n])
+        else :
+            cv2.putText(frame, f"sit near to far to camera and press 'n' to calibrate", (300, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            if f <=3:
+                cv2.putText(frame, f"{calib_points[f]}", (300, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+                pag.moveTo(calib_points[f])
+
 
     sxr,syr,dar,sr = smooth_r.smooth(xr,yr)
     sxl,syl,dal,sl = smooth_l.smooth(xl,yl)
@@ -54,11 +79,36 @@ while True:
         if  avg_dis  < treshold_click :
             cv2.putText(frame,"click", (500, 500), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
+    ranges = calib.get_calibrated_range(treshold_click)
+
+    if ranges is not None:
+        x_range , y_range = ranges
+
+        screen_x = np.interp(sxl,x_range,[0,screen_w])
+        screen_y = np.interp(syl,y_range,[0,screen_h])
+        cv2.putText(frame,f"{screen_x} {screen_y}", (700, 430), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+
+        pag.moveTo(screen_x,screen_y)
+
+
 
     cv2.imshow('frame',frame)
     key = cv2.waitKey(1)
     if key == ord('q'):
         break
+    if key == ord('n'):
+        if n<=3 :
+            calib.calib_mode = 'Near'
+            calib.capture(sxl,syl,treshold_click)
+            print("capturing near")
+            n=n+1
+    if key == ord('f'):
+        if f<=3 :
+            calib.calib_mode = 'Far'
+            calib.capture(sxl,syl,treshold_click)
+            print("capturing far")
+            f=f+1
+
 
 
 cap.release()
