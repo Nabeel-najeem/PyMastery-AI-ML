@@ -6,7 +6,7 @@ import pyautogui as pag
 
 def empth(x):
     pass
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 hands = mp.solutions.hands
 hand = hands.Hands()
 drawing_util = mp.solutions.drawing_utils
@@ -154,6 +154,7 @@ while True :
                     scroll_amount = (y_mouse - py) * 2
                     if abs(scroll_amount) > 2:
                         pag.scroll(-int(scroll_amount))
+
                 #drag and drop
                 if drag_distance < drag_dynamic_treshold :
                     if not is_draging:
@@ -170,6 +171,9 @@ while True :
                             pag.mouseUp()
                             is_draging = False
                             cv2.putText(frame, "DROP", (1100, 200),cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0),2)
+
+                # new drag and drop gesture
+
 
 
                 '''if not is_draging :
