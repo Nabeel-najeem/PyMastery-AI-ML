@@ -42,7 +42,7 @@ class face_detector:
         if None in [lhx,lhy,rhx,rhy,fhx,fhy]:
             return None
         dis_fh_lh = math.hypot(fhx-lhx,fhy-lhy)
-        dis_lh_rh = math.hypot(lhx-rhx,fhy-rhy)
+        dis_lh_rh = math.hypot(lhx-rhx,lhy-rhy)
         dis_fh_rh = math.hypot(fhx-rhx,fhy-lhy)
 
         treshold = ((dis_fh_rh+ dis_fh_lh+ dis_lh_rh)/3)/9.7
