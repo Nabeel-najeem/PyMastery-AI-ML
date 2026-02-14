@@ -17,7 +17,7 @@ class possDetector:
         self.curent_result = self.pose.process(rgb_frame)
 
         if self.curent_result.pose_landmarks:
-            return self.curent_result.pose_landmarks
+            return self.curent_result.pose_landmarks.landmark
         return None
     def get_body_tilt(self,landmarks):
         if landmarks :
@@ -26,4 +26,22 @@ class possDetector:
             tile = (left_sholder.x + right_sholder.x)/2
             return tile
         return 0.5
+
+    def get_shrug(self,landmarks):
+        if landmarks :
+
+            left_ear_y = landmarks[7].y
+            left_shoulder_y = landmarks[11].y
+
+            right_ear_y = landmarks[8].y
+            right_shoulder_y = landmarks[12].y
+
+            left_shurg_dist = left_shoulder_y - left_ear_y
+            right_shurg_dist = right_shoulder_y - right_ear_y
+
+            if left_shurg_dist < 0.3 and right_shurg_dist < 0.3 :
+                return True
+
+        return False
+
 
