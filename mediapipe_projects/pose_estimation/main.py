@@ -16,9 +16,10 @@ while True:
     frame = cv2.flip(frame,1)
 
     pose_lms = pose.find_pose(frame)
-    if pose_lms is not None:
-        mp_drawing.draw_landmarks(frame,pose_lms,mp_pose.POSE_CONNECTIONS)
 
+    is_shurg = pose.get_shrug(pose_lms)
+    if is_shurg == True:
+        cv2.putText(frame, f"shurg detected", (100, 200), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
     cv2.imshow('frame',frame)
 
