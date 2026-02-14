@@ -45,8 +45,8 @@ This repository is a live log of my daily consistency in Python and AI developme
 | **Day 27** | Feb 10 | **Face-Mouse Logic:** Integrated Dynamic Thresholding based on cranial width. Implemented bilateral Blink Detection (EAR-lite). |
 | **Day 28** | Feb 11 | **Modular Architecture Finalized :** Completed the Face Engine and Adaptive Signal Processor with dual-eye stabilization. |
 | **Day 29** | Feb 12 | **3D Calibration Complete :** Integrated Deapth_caliibration with dual-plane (Near/Far) logic. Successfully mapped pupil movement to 1080p screen coordinates using depth-adjusted scaling. |
-| **Day 30** | Feb 13 | **Pose Vision Initialized : ** Successfully integrated MediaPipe Pose into the modular repo and rendered the real-time skeletal overlay. |
-| **Day 31** | Feb 14 | **Gesture Engineering : ** Developed a modular possDetector class and successfully implemented a dual-shoulder shrug detection system. |
+| **Day 30** | Feb 13 | **pose Vision Initialized :** Successfully integrated MediaPipe Pose into the modular repo and rendered the real-time skeletal overlay. |
+| **Day 31** | Feb 14 | **Gesture Engineering :** Developed a modular possDetector class and successfully implemented a dual-shoulder shrug detection system. |
 
 ---
 
