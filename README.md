@@ -47,6 +47,7 @@ This repository is a live log of my daily consistency in Python and AI developme
 | **Day 29** | Feb 12 | **3D Calibration Complete :** Integrated Deapth_caliibration with dual-plane (Near/Far) logic. Successfully mapped pupil movement to 1080p screen coordinates using depth-adjusted scaling. |
 | **Day 30** | Feb 13 | **pose Vision Initialized :** Successfully integrated MediaPipe Pose into the modular repo and rendered the real-time skeletal overlay. |
 | **Day 31** | Feb 14 | **Gesture Engineering :** Developed a modular possDetector class and successfully implemented a dual-shoulder shrug detection system. |
+| **Day 32** | Feb 15 | **Gesture Synergy & Tuning :** Integrated joint angle kinematics with shrug detection in main.py. Finalized gesture thresholds for 3D command execution. |
 
 ---
 
