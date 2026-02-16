@@ -24,8 +24,8 @@ class possDetector:
         if landmarks :
             left_sholder = landmarks[11]
             right_sholder = landmarks[12]
-            tile = (left_sholder.x + right_sholder.x)/2
-            return tile
+            tilt = (left_sholder.x + right_sholder.x)/2
+            return tilt
         return 0.5
 
     def get_shrug(self,landmarks):
@@ -57,7 +57,24 @@ class possDetector:
             angle =abs(angle)
             if angle > 180 :
                 angle = 360-angle
-            return angle
+            return int(angle)
         return None
+
+    def get_posture(self,landmarks) :
+        left_s,right_s = landmarks[11].y,landmarks[12].y
+        shoulder_diff = abs(left_s-right_s)
+
+        nose_y = landmarks[0].y
+        mid_shoulder_y =(left_s+right_s)/2
+        neck_dist = mid_shoulder_y - nose_y
+
+        if neck_dist < 0.15 :
+            return "slouching"
+        elif shoulder_diff > 0.05 :
+            return "SIDE_LEANING"
+
+        return "GOOD POSTURE"
+
+
 
 
