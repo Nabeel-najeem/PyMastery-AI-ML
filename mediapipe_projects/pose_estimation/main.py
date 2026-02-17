@@ -1,4 +1,5 @@
 import cv2
+import pyautogui as pag
 import mediapipe as mp
 
 mp_drawing = mp.solutions.drawing_utils
@@ -36,6 +37,7 @@ while True:
         if shurg_cooldown ==0 :
             command_active  = not command_active
             shurg_cooldown = 20
+            pag.press('volumemute')
 
 
     if shurg_cooldown > 0 :
