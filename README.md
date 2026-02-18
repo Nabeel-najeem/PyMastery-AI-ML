@@ -50,6 +50,7 @@ This repository is a live log of my daily consistency in Python and AI developme
 | **Day 32** | Feb 15 | **Gesture Synergy & Tuning :** Integrated joint angle kinematics with shrug detection in main.py. Finalized gesture thresholds for 3D command execution. |
 | **Day 33** | Feb 16 | **System State & Spatial Health :** Implemented persistent toggle logic with debouncing. Engineered a posture monitoring system using neck-to-shoulder displacement for real-time health alerts. |
 | **Day 34** | Feb 17 | **Hardware Interfacing :** Successfully mapped gesture-based state toggles to system audio via pyautogui. Finalized the MediaPipe training phase. |
+| **Day 35** | Feb 18 | **Modular Object Detection :** Engineered object_engine.py using a class-based architecture. Implemented GPU-accelerated YOLOv8 inference and data serialization (JSON-like dictionary outputs) for real-time tracking. |
 
 ---
 
