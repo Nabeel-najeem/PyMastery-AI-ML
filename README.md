@@ -51,6 +51,7 @@ This repository is a live log of my daily consistency in Python and AI developme
 | **Day 33** | Feb 16 | **System State & Spatial Health :** Implemented persistent toggle logic with debouncing. Engineered a posture monitoring system using neck-to-shoulder displacement for real-time health alerts. |
 | **Day 34** | Feb 17 | **Hardware Interfacing :** Successfully mapped gesture-based state toggles to system audio via pyautogui. Finalized the MediaPipe training phase. |
 | **Day 35** | Feb 18 | **Modular Object Detection :** Engineered object_engine.py using a class-based architecture. Implemented GPU-accelerated YOLOv8 inference and data serialization (JSON-like dictionary outputs) for real-time tracking. |
+| **Day 36** | Feb 19 | **Spatial Data Inspection:** Optimized object_engine.py to extract raw $xywh$ Tensors. Implemented a Logic Gate to filter detections by Aspect Ratio ($>1.2$) and real-time Area Calculation for laptop targets. |
 
 ---
 
