@@ -4,7 +4,10 @@ from ultralytics import YOLO
 
 model = YOLO("yolov8n.pt")
 
-known_width = 9.0
+real_width = {
+    "cell phone" : 7.5,
+    "bottle" : 7.0
+}
 focal_length = 650
 
 cap = cv2.VideoCapture(0)
@@ -23,11 +26,11 @@ while True :
             cls_id = int(box.cls[0])
             label = r.names[cls_id]
             
-            if label == "cell phone" :
+            if label in real_width :
                 
                 w_pixel = float(box.xywh[0][2])
                 
-                distance = (known_width*focal_length)/w_pixel
+                distance = (real_width[label]*focal_length)/w_pixel
                 
                 x1,y1,x2,y2 = map(int,box.xyxy[0])
                 cv2.rectangle(frame,(x1,y1),(x2,y2),(0,255,0),2)
