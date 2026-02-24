@@ -20,11 +20,15 @@ while True :
     
     result = model.track(frame,persist=True,device = 0, verbose = False)
     
+    frame_counts = {}
+    
     for r in result :
         boxes = r.boxes
         for box in boxes :
             cls_id = int(box.cls[0])
             label = r.names[cls_id]
+            
+            frame_counts[label]=frame_counts.get(label,0)+1
             
             if label in real_width :
                 
@@ -35,7 +39,12 @@ while True :
                 x1,y1,x2,y2 = map(int,box.xyxy[0])
                 cv2.rectangle(frame,(x1,y1),(x2,y2),(0,255,0),2)
                 cv2.putText(frame,f"distance : {distance: .1f}cm",(x1,y1-10),cv2.FONT_HERSHEY_SCRIPT_SIMPLEX,0.6,(0,255,0),2)
-    
+
+                y_offset = 30
+                for obj_name,count in frame_counts.items():
+                    text = f"Total {obj_name}s : {count}"
+                    cv2.putText(frame,text,(20,y_offset),cv2.FONT_HERSHEY_SCRIPT_SIMPLEX,0.6,(0,255,0),2)
+                    y_offset+=30
     
     
     cv2.imshow("frame",frame)
