@@ -13,6 +13,8 @@ cap = cv2.VideoCapture(0)
 
 
 track_history = {}
+speed_buffer = {}
+buffer_size = 10
 
 while True:
     success, frame = cap.read()
@@ -43,7 +45,16 @@ while True:
                         delta_t = current_time - prev_time
                         
                         if delta_t > 0:
-                            speed = delta_d / delta_t 
+                            raw_speed = delta_d / delta_t 
+                            
+                            if track_id not in speed_buffer:
+                                speed_buffer[track_id] = []
+                            speed_buffer[track_id].append(raw_speed)
+                            
+                            if len(speed_buffer[track_id])>buffer_size:
+                                speed_buffer[track_id].pop(0)
+                                
+                            speed = sum(speed_buffer[track_id])/len(speed_buffer[track_id])
                     
                     track_history[track_id] = (distance, current_time)
 
