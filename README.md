@@ -60,6 +60,7 @@ This repository is a live log of my daily consistency in Python and AI developme
 | **Day 42** | Feb 25 | **Velocity Estimation Engine:** Implemented temporal distance tracking using time.time() deltas. Developed a tracking history buffer to calculate real-time object speed (cm/s) based on monocular depth shifts.  |
 | **Day 43** | Feb 26 | **Visual Spatial Overlay:** Integrated real-time spatial metrics (Area/Ratio) directly into the OpenCV rendering pipeline. Developed an automated object summary generator for static image inference on an RTX 2050.  |
 | **Day 44** | Feb 27 | **Temporal Signal Smoothing:** Developed a velocity stabilization layer using a Moving Average Buffer. Reduced pixel-jitter noise in speed calculations, resulting in a consistent cm/s telemetry output for tracked objects.  |
+| **Day 45** | Feb 28 | **YOLO Fundamentals (Re-Zero):** Analyzed One-Stage detection theory (Backbone vs. Head). Implemented manual benchmarking for RTX 2050 inference speeds (~19 FPS) and engineered a targeted filtering logic gate using COCO Class ID 3 (Motorcycles) with NMS tuning. |
 
 ---
 
