@@ -61,6 +61,7 @@ This repository is a live log of my daily consistency in Python and AI developme
 | **Day 43** | Feb 26 | **Visual Spatial Overlay:** Integrated real-time spatial metrics (Area/Ratio) directly into the OpenCV rendering pipeline. Developed an automated object summary generator for static image inference on an RTX 2050.  |
 | **Day 44** | Feb 27 | **Temporal Signal Smoothing:** Developed a velocity stabilization layer using a Moving Average Buffer. Reduced pixel-jitter noise in speed calculations, resulting in a consistent cm/s telemetry output for tracked objects.  |
 | **Day 45** | Feb 28 | **YOLO Fundamentals (Re-Zero):** Analyzed One-Stage detection theory (Backbone vs. Head). Implemented manual benchmarking for RTX 2050 inference speeds (~19 FPS) and engineered a targeted filtering logic gate using COCO Class ID 3 (Motorcycles) with NMS tuning. |
+| **Day 46** | Mar 1 | **Live Inference & Spatial UI:** Transitioned to manual rendering of YOLOv8 outputs. Engineered a dynamic labeling system using (x1-y1) offsets to anchor metadata to moving targets. Implemented frame-mirroring logic for natural-view webcam interaction and benchmarked live inference stability. |
 
 ---
 
