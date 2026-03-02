@@ -5,7 +5,9 @@ model = YOLO("yolov8n.pt")
 
 cap = cv2.VideoCapture(0)
 
+
 while True :
+    person_count = 0    
     success,frame = cap.read()
     if success == True :
         frame = cv2.flip(frame,1)
@@ -15,13 +17,25 @@ while True :
         for r in result:
             for box in r.boxes :
                 cls_id = int(box.cls[0])
+                conf = float(box.conf[0])
+                x1,y1,x2,y2 = map(int,box.xyxy[0])
+                
                 if cls_id == 0 :
-                    x1,y1,x2,y2 = box.xyxy[0].tolist()
-                    cv2.putText(frame,f"person detected", (100,100), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-                    print("person detected")
-                    x1,y1,x2,y2 = int(x1),int(y1),int(x2),int(y2)
-                    cv2.putText(frame,f"person detected", ((x1-10),(y1-10)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-                    cv2.rectangle(frame,(x1,y1),(x2,y2),(255,0,255),3)
+                    color =(0,0,255)
+                    label = f"Target : person {conf:.2f}"
+                    person_count += 1
+                elif cls_id == 67 :
+                    color =(0,255,0)
+                    label = f"Target : phone {conf:.2f}"
+                else :
+                    continue
+                
+                
+                cv2.putText(frame,f"total person present : {person_count}",(25,25), cv2.FONT_HERSHEY_SIMPLEX, 0.5,color, 2)
+                cv2.putText(frame,label, ((x1-10),(y1-10)), cv2.FONT_HERSHEY_SIMPLEX, 0.5,color, 2)
+                cv2.rectangle(frame,(x1,y1),(x2,y2),color,3)
+                
+                
             
         
         cv2.imshow("frame",frame)
