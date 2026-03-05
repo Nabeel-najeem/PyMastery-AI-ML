@@ -65,6 +65,7 @@ This repository is a live log of my daily consistency in Python and AI developme
 | **Day 47** | Mar 02 | **Temporal Logic & Real-Time Aggregation:** Engineered a frame-resetting counter system to manage dynamic populations in live video. Successfully implemented additive assignment logic ($+=1$) to calculate real-time "Person" occupancy within a mirrored OpenCV pipeline. |
 | **Day 48** | Mar 03 | **Dynamic UI & Loop Decoupling:** Successfully engineered a multi-object telemetry dashboard. Implemented frame-level coordinate resetting for stable Y-axis text distribution and decoupled the detection loop from the rendering loop to ensure UI consistency in real-time streams. |
 | **Day 49** | Mar 04 | **Boolean Alert Systems:** Implemented a full-screen alert engine triggered by occupancy thresholds. Engineered a global 'Alert Mode' state to dynamically alter UI color palettes and render situational overlays based on real-time population density. |
+| **Day 50** | Mar 05 | **Spatial Logic & Virtual Fencing:** Engineered a real-time Region of Interest (ROI) system. Implemented centroid-based ($cx$) boundary detection to trigger situational alerts. Mastered resolution-independent UI anchoring to provide dynamic visual feedback for intruders. |
 ---
 
 ## 📈 Consistency Tracking
