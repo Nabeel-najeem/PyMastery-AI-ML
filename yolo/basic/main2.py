@@ -14,10 +14,14 @@ while True:
     
     frame = cv2.flip(frame, 1)
     h, w, _ = frame.shape 
+    overlay = frame.copy()
     
     gate_line_x = w//3
     
     cv2.line(frame,(gate_line_x,0),(gate_line_x,h),(255,255,0),2)
+    cv2.rectangle(overlay,(0,0),(gate_line_x,h),(0,0,255),-1)
+    frame = cv2.addWeighted(overlay,0.3,frame,0.7,0)
+    
     
     count = {"person": 0, "cell phone": 0} 
     result = model(frame, conf=0.25, iou=0.01, verbose=False)
@@ -32,8 +36,8 @@ while True:
                 obj_name, color = "person", (0, 0, 255) # Red
                 cx = (x1+x2)//2
                 if cx < gate_line_x :
-                    cv2.putText(frame, f"entered resyricted area !!", (500, 400), 
-                                cv2.FONT_HERSHEY_SIMPLEX,0.5, (0,0,255), 6)
+                    cv2.putText(frame, f"entered restricted area !!", (500, 400), 
+                                cv2.FONT_HERSHEY_COMPLEX,1, (0,0,255), 2)
                         
                 
             elif cls_id == 67:
@@ -61,6 +65,8 @@ while True:
                         cv2.FONT_HERSHEY_SIMPLEX, 0.8, txt_color, 2)
             y_val += 35
 
+
+    
     cv2.imshow("Hexer AI Security System", frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
