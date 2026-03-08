@@ -5,7 +5,7 @@ model = YOLO("yolov8n.pt").to("cuda")
 
 cap = cv2.VideoCapture(0)
 
-person_ids = set()  
+person_ids = set()
 
 while True:
 
@@ -52,14 +52,14 @@ while True:
                 obj_name = "person"
                 color = (0,0,255)
 
-                person_ids.add(obj_id)
 
                 cx = (x1 + x2) // 2
 
                 if cx < gate_line_x:
+                    person_ids.add(obj_id) 
                     cv2.putText(
                         frame,
-                        "Entered Restricted Area!",
+                        f"Entered Restricted Area!",
                         (400, 100),
                         cv2.FONT_HERSHEY_COMPLEX,
                         1,
@@ -123,8 +123,10 @@ while True:
             y_val += 35
             
     frame = cv2.addWeighted(overlay, 0.3, frame, 0.7, 0)
+   
+    cv2.putText(frame,f"total {len(person_ids)} person enterd in restricted area ",(600, 120),cv2.FONT_HERSHEY_SIMPLEX,0.8,txt_color,2)
 
-
+    
     cv2.imshow("frame", frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
