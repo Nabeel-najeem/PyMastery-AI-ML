@@ -1,4 +1,5 @@
 import cv2
+import time 
 from ultralytics import YOLO
 
 model = YOLO("yolov8n.pt").to("cuda")
@@ -6,12 +7,20 @@ model = YOLO("yolov8n.pt").to("cuda")
 cap = cv2.VideoCapture(0)
 
 person_ids = set()
+p_time = 0
 
 while True:
 
     success, frame = cap.read()
     if not success:
         break
+    
+    c_time = time.time()
+    if p_time != 0 :
+        fps = 1/(c_time - p_time)
+    else :
+        fps = 0
+    p_time = c_time
 
     frame = cv2.flip(frame, 1)
     h, w, _ = frame.shape
@@ -102,6 +111,15 @@ while True:
             (0,0,255),
             4
         )
+    cv2.putText(
+        frame,
+        f"FPS : {int(fps)}",
+        (100,100),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        1.2,
+        (0,0,255),
+        4
+    )
 
     y_val = 40
     for key, val in count.items():
