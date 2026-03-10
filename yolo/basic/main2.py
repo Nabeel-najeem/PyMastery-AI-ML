@@ -1,5 +1,7 @@
+import os
 import cv2
-import time 
+import time
+import datetime
 from ultralytics import YOLO
 
 model = YOLO("yolov8n.pt").to("cuda")
@@ -9,6 +11,9 @@ cap = cv2.VideoCapture(0)
 person_ids = set()
 p_time = 0
 
+if not os.path.exists("intruders"):
+    os.makedirs("intruders")
+
 while True:
 
     success, frame = cap.read()
@@ -16,6 +21,8 @@ while True:
         break
     
     c_time = time.time()
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+
     if p_time != 0 :
         fps = 1/(c_time - p_time)
     else :
@@ -65,16 +72,11 @@ while True:
                 cx = (x1 + x2) // 2
 
                 if cx < gate_line_x:
-                    person_ids.add(obj_id) 
-                    cv2.putText(
-                        frame,
-                        f"Entered Restricted Area!",
-                        (400, 100),
-                        cv2.FONT_HERSHEY_COMPLEX,
-                        1,
-                        (0,0,255),
-                        2
-                    )
+                    cv2.putText(frame,f"Entered Restricted Area!",(400, 100),cv2.FONT_HERSHEY_COMPLEX,1,(0,0,255),2)
+                    if obj_id not in person_ids  : 
+                        cv2.imwrite(f"intruders/intruder_{obj_id}_{timestamp}.jpg",frame)
+                        print(f"evidence saved for {obj_id}")
+                        person_ids.add(obj_id)
 
             elif cls_id == 67:
 
@@ -111,15 +113,7 @@ while True:
             (0,0,255),
             4
         )
-    cv2.putText(
-        frame,
-        f"FPS : {int(fps)}",
-        (100,100),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        1.2,
-        (0,0,255),
-        4
-    )
+    
 
     y_val = 40
     for key, val in count.items():
@@ -142,8 +136,8 @@ while True:
             
     frame = cv2.addWeighted(overlay, 0.3, frame, 0.7, 0)
    
-    cv2.putText(frame,f"total {len(person_ids)} person enterd in restricted area ",(600, 120),cv2.FONT_HERSHEY_SIMPLEX,0.8,txt_color,2)
-
+    cv2.putText(frame,f"total {len(person_ids)} person enterd in restricted area ",(600, 120),cv2.FONT_HERSHEY_SIMPLEX,0.8,(0,0,255),2)
+    cv2.putText(frame,f"FPS : {int(fps)}",(100,100),cv2.FONT_HERSHEY_SIMPLEX,1.2,(255,0,255),4)
     
     cv2.imshow("frame", frame)
 

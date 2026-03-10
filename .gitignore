@@ -5,3 +5,5 @@ __pycache__/
 venv/
 .env/
 .idea/
+yolov8n.pt
+et --hard b0c002e
