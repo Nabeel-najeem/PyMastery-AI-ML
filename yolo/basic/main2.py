@@ -1,9 +1,25 @@
+import sqlite3
 import os
 import cv2
 import time
 import datetime
 from ultralytics import YOLO
 
+def init_db():
+    conn = sqlite3.connect("hexer_security.db")
+    cursor = conn.cursor()
+    
+    cursor.execute("""
+                   CREATE TABLE IF NOT EXISTS intruders(
+                       id INTEGER PRIMARY KEY,
+                       timestamp TEXT)""")
+    conn.commit()
+    return conn,cursor
+
+conn,cursor = init_db()
+    
+    
+    
 model = YOLO("yolov8n.pt").to("cuda")
 
 cap = cv2.VideoCapture(0)
@@ -73,10 +89,15 @@ while True:
 
                 if cx < gate_line_x:
                     cv2.putText(frame,f"Entered Restricted Area!",(400, 100),cv2.FONT_HERSHEY_COMPLEX,1,(0,0,255),2)
+                    cursor.execute("SELECT id FROM intruders WHERE id = ?",(obj_id,))
+                    data = cursor.fetchone()
                     if obj_id not in person_ids  : 
-                        cv2.imwrite(f"intruders/intruder_{obj_id}_{timestamp}.jpg",frame)
-                        print(f"evidence saved for {obj_id}")
-                        person_ids.add(obj_id)
+                        if data is None :
+                            cv2.imwrite(f"intruders/intruder_{obj_id}_{timestamp}.jpg",frame)
+                            cursor.execute("INSERT INTO intruders (id,timestamp) values (?,?)",(obj_id,timestamp))
+                            conn.commit()
+                            print(f"evidence saved for {obj_id}")
+                            person_ids.add(obj_id)
 
             elif cls_id == 67:
 
