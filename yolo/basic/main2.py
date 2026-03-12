@@ -17,6 +17,13 @@ def init_db():
     return conn,cursor
 
 conn,cursor = init_db()
+def sync_memory():
+
+    cursor.execute("SELECT id FROM intruders")
+    rows = cursor.fetchall()
+    for row in rows :
+        person_ids.add(row[0])
+    print(f"Synced {len(person_ids)} history records")
     
     
     
@@ -30,7 +37,9 @@ p_time = 0
 if not os.path.exists("intruders"):
     os.makedirs("intruders")
 
+sync_memory()
 while True:
+    
 
     success, frame = cap.read()
     if not success:
@@ -38,6 +47,7 @@ while True:
     
     c_time = time.time()
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    ScreenTimeStamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     if p_time != 0 :
         fps = 1/(c_time - p_time)
@@ -159,6 +169,7 @@ while True:
    
     cv2.putText(frame,f"total {len(person_ids)} person enterd in restricted area ",(600, 120),cv2.FONT_HERSHEY_SIMPLEX,0.8,(0,0,255),2)
     cv2.putText(frame,f"FPS : {int(fps)}",(100,100),cv2.FONT_HERSHEY_SIMPLEX,1.2,(255,0,255),4)
+    cv2.putText(frame,f"{ScreenTimeStamp}",(800,50),cv2.FONT_HERSHEY_SIMPLEX,1.2,(255,255,255),4)
     
     cv2.imshow("frame", frame)
 
