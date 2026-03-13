@@ -37,9 +37,13 @@ p_time = 0
 if not os.path.exists("intruders"):
     os.makedirs("intruders")
 
+
+
 sync_memory()
 while True:
     
+    intruder_detected_this_frame = False
+    current_intruder_id = None
 
     success, frame = cap.read()
     if not success:
@@ -103,10 +107,9 @@ while True:
                     data = cursor.fetchone()
                     if obj_id not in person_ids  : 
                         if data is None :
-                            cv2.imwrite(f"intruders/intruder_{obj_id}_{timestamp}.jpg",frame)
-                            cursor.execute("INSERT INTO intruders (id,timestamp) values (?,?)",(obj_id,timestamp))
-                            conn.commit()
-                            print(f"evidence saved for {obj_id}")
+                            intruder_detected_this_frame = True
+                            current_intruder_id = obj_id
+                            
                             person_ids.add(obj_id)
 
             elif cls_id == 67:
@@ -170,6 +173,12 @@ while True:
     cv2.putText(frame,f"total {len(person_ids)} person enterd in restricted area ",(600, 120),cv2.FONT_HERSHEY_SIMPLEX,0.8,(0,0,255),2)
     cv2.putText(frame,f"FPS : {int(fps)}",(100,100),cv2.FONT_HERSHEY_SIMPLEX,1.2,(255,0,255),4)
     cv2.putText(frame,f"{ScreenTimeStamp}",(800,50),cv2.FONT_HERSHEY_SIMPLEX,1.2,(255,255,255),4)
+    
+    if intruder_detected_this_frame :
+        cv2.imwrite(f"intruders/intruder_{obj_id}_{timestamp}.jpg",frame)
+        cursor.execute("INSERT INTO intruders (id,timestamp) values (?,?)",(obj_id,timestamp))
+        conn.commit()
+        print(f"evidence saved for {obj_id}")
     
     cv2.imshow("frame", frame)
 
