@@ -175,8 +175,8 @@ while True:
     cv2.putText(frame,f"{ScreenTimeStamp}",(800,50),cv2.FONT_HERSHEY_SIMPLEX,1.2,(255,255,255),4)
     
     if intruder_detected_this_frame :
-        cv2.imwrite(f"intruders/intruder_{obj_id}_{timestamp}.jpg",frame)
-        cursor.execute("INSERT INTO intruders (id,timestamp) values (?,?)",(obj_id,timestamp))
+        cv2.imwrite(f"intruders/intruder_{current_intruder_id}_{timestamp}.jpg",frame)
+        cursor.execute("INSERT INTO intruders (id,timestamp) values (?,?)",(current_intruder_id,timestamp))
         conn.commit()
         print(f"evidence saved for {obj_id}")
     
