@@ -179,6 +179,11 @@ while True:
         cursor.execute("INSERT INTO intruders (id,timestamp) values (?,?)",(current_intruder_id,timestamp))
         conn.commit()
         print(f"evidence saved for {obj_id}")
+        
+
+    cv2.rectangle(frame, (0, 680), (250, 715), (0, 0, 0), -1) 
+    status_text = f"DB: Connected | AI: YOLOv8n"
+    cv2.putText(frame, status_text, (10, 700), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
     
     cv2.imshow("frame", frame)
 
