@@ -40,8 +40,8 @@ if not os.path.exists("intruders"):
 
 
 sync_memory()
+start_time = time .time()
 while True:
-    
     intruder_detected_this_frame = False
     current_intruder_id = None
 
@@ -179,10 +179,10 @@ while True:
         cursor.execute("INSERT INTO intruders (id,timestamp) values (?,?)",(current_intruder_id,timestamp))
         conn.commit()
         print(f"evidence saved for {obj_id}")
-        
+    uptime = int(time.time() - start_time)
 
-    cv2.rectangle(frame, (0, 680), (250, 715), (0, 0, 0), -1) 
-    status_text = f"DB: Connected | AI: YOLOv8n"
+    cv2.rectangle(frame, (0, 680), (370, 715), (0, 0, 0), -1) 
+    status_text = f"DB: Connected | AI: YOLOv8n | uptime : {uptime} s"
     cv2.putText(frame, status_text, (10, 700), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
     
     cv2.imshow("frame", frame)
