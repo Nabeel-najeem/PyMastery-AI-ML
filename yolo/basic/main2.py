@@ -11,7 +11,7 @@ def init_db():
     
     cursor.execute("""
                    CREATE TABLE IF NOT EXISTS intruders(
-                       id INTEGER PRIMARY KEY,
+                       id INTEGER PRIMARY KEY AUTOINCREMENT,person_id INTEGER,
                        timestamp TEXT)""")
     conn.commit()
     return conn,cursor
@@ -37,7 +37,7 @@ p_time = 0
 if not os.path.exists("intruders"):
     os.makedirs("intruders")
 
-
+last_log_time = {}
 
 sync_memory()
 start_time = time .time()
@@ -105,12 +105,12 @@ while True:
                     cv2.putText(frame,f"Entered Restricted Area!",(400, 100),cv2.FONT_HERSHEY_COMPLEX,1,(0,0,255),2)
                     cursor.execute("SELECT id FROM intruders WHERE id = ?",(obj_id,))
                     data = cursor.fetchone()
+                    intruder_detected_this_frame = True
+                    current_intruder_id = obj_id
                     if obj_id not in person_ids  : 
-                        if data is None :
-                            intruder_detected_this_frame = True
-                            current_intruder_id = obj_id
+                        person_ids.add(obj_id)
+                        
                             
-                            person_ids.add(obj_id)
 
             elif cls_id == 67:
 
@@ -175,10 +175,12 @@ while True:
     cv2.putText(frame,f"{ScreenTimeStamp}",(800,50),cv2.FONT_HERSHEY_SIMPLEX,1.2,(255,255,255),4)
     
     if intruder_detected_this_frame :
-        cv2.imwrite(f"intruders/intruder_{current_intruder_id}_{timestamp}.jpg",frame)
-        cursor.execute("INSERT INTO intruders (id,timestamp) values (?,?)",(current_intruder_id,timestamp))
-        conn.commit()
-        print(f"evidence saved for {obj_id}")
+        if current_intruder_id not in last_log_time or (c_time - last_log_time[current_intruder_id]) > 30 :
+            cv2.imwrite(f"intruders/intruder_{current_intruder_id}_{timestamp}.jpg",frame)
+            cursor.execute("INSERT INTO intruders (person_id,timestamp) values (?,?)",(current_intruder_id,timestamp))
+            conn.commit()
+            print(f"evidence saved for {current_intruder_id}")
+            last_log_time[current_intruder_id] = c_time
     uptime = int(time.time() - start_time)
 
     cv2.rectangle(frame, (0, 680), (370, 715), (0, 0, 0), -1) 
