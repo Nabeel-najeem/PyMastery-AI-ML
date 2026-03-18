@@ -53,6 +53,14 @@ while True:
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     ScreenTimeStamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+    today_folder = datetime.datetime.now().strftime("%Y-%m-%d")
+    save_path = f"intruders/{today_folder}"
+    
+    if not os.path.exists(save_path):
+        os.mkdir(save_path)
+    
+    
+    
     if p_time != 0 :
         fps = 1/(c_time - p_time)
     else :
@@ -176,7 +184,7 @@ while True:
     
     if intruder_detected_this_frame :
         if current_intruder_id not in last_log_time or (c_time - last_log_time[current_intruder_id]) > 30 :
-            cv2.imwrite(f"intruders/intruder_{current_intruder_id}_{timestamp}.jpg",frame)
+            cv2.imwrite(f"{save_path}/intruder_{current_intruder_id}_{timestamp}.jpg",frame)
             cursor.execute("INSERT INTO intruders (person_id,timestamp) values (?,?)",(current_intruder_id,timestamp))
             conn.commit()
             print(f"evidence saved for {current_intruder_id}")
