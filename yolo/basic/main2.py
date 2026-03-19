@@ -189,6 +189,9 @@ while True:
             conn.commit()
             print(f"evidence saved for {current_intruder_id}")
             last_log_time[current_intruder_id] = c_time
+            log_file_path = f"{save_path}/daily_report.txt"
+            with open(log_file_path,"a") as f :
+                f.write(f"ID : {current_intruder_id} | Time : {ScreenTimeStamp}\n" )
     uptime = int(time.time() - start_time)
 
     cv2.rectangle(frame, (0, 680), (370, 715), (0, 0, 0), -1) 
