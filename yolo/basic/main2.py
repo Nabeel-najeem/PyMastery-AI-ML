@@ -72,6 +72,8 @@ while True:
 
     overlay = frame.copy()
     gate_line_x = w // 3
+    warning_line = w//2
+    critical_line = w//4
 
     cv2.line(frame, (gate_line_x, 0), (gate_line_x, h), (255,255,0), 2)
 
@@ -109,7 +111,14 @@ while True:
 
                 cx = (x1 + x2) // 2
 
-                if cx < gate_line_x:
+                
+                if cx < warning_line and cx > critical_line :
+                    cv2.putText(frame, "WARNING: RESTRICTED AREA AHEAD", (w//2, 50), 
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 3)
+                    cv2.line(frame, (warning_line, 0), (warning_line, h), (0, 255, 255), 2)
+                elif cx <= critical_line :
+                    cv2.putText(frame, "!!! CRITICAL BREACH !!!", (w//2, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 4)
+                elif cx < gate_line_x:
                     cv2.putText(frame,f"Entered Restricted Area!",(400, 100),cv2.FONT_HERSHEY_COMPLEX,1,(0,0,255),2)
                     cursor.execute("SELECT id FROM intruders WHERE id = ?",(obj_id,))
                     data = cursor.fetchone()
