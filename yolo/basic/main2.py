@@ -42,6 +42,7 @@ last_log_time = {}
 sync_memory()
 start_time = time .time()
 while True:
+    ui_color = (0,255,0)
     intruder_detected_this_frame = False
     current_intruder_id = None
 
@@ -115,9 +116,12 @@ while True:
                 if cx < warning_line and cx > critical_line :
                     cv2.putText(frame, "WARNING: RESTRICTED AREA AHEAD", (w//2, 50), 
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 3)
+                    ui_color= (0,255,255)
                     cv2.line(frame, (warning_line, 0), (warning_line, h), (0, 255, 255), 2)
                 elif cx <= critical_line :
                     cv2.putText(frame, "!!! CRITICAL BREACH !!!", (w//2, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 4)
+                    ui_color= (0,0,255)
+                    
                 elif cx < gate_line_x:
                     cv2.putText(frame,f"Entered Restricted Area!",(400, 100),cv2.FONT_HERSHEY_COMPLEX,1,(0,0,255),2)
                     cursor.execute("SELECT id FROM intruders WHERE id = ?",(obj_id,))
@@ -206,7 +210,7 @@ while True:
     cv2.rectangle(frame, (0, 680), (370, 715), (0, 0, 0), -1) 
     status_text = f"DB: Connected | AI: YOLOv8n | uptime : {uptime} s"
     cv2.putText(frame, status_text, (10, 700), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
-    
+    cv2.putText(frame,"STATUS : MONITORING",(1000,700),cv2.FONT_HERSHEY_COMPLEX,0.6,ui_color,2)
     cv2.imshow("frame", frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
