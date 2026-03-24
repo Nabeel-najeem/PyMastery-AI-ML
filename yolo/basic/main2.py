@@ -70,6 +70,9 @@ while True:
 
     frame = cv2.flip(frame, 1)
     h, w, _ = frame.shape
+    dynamic_scale = w/1280
+    thickness = max(1,int(2* dynamic_scale))
+    font_size = 0.6 * dynamic_scale
 
     overlay = frame.copy()
     gate_line_x = w // 3
@@ -115,15 +118,15 @@ while True:
                 
                 if cx < warning_line and cx > critical_line :
                     cv2.putText(frame, "WARNING: RESTRICTED AREA AHEAD", (w//2, 50), 
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 3)
+                    cv2.FONT_HERSHEY_SIMPLEX, font_size, (0, 255, 255), thickness)
                     ui_color= (0,255,255)
                     cv2.line(frame, (warning_line, 0), (warning_line, h), (0, 255, 255), 2)
                 elif cx <= critical_line :
-                    cv2.putText(frame, "!!! CRITICAL BREACH !!!", (w//2, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 4)
+                    cv2.putText(frame, "!!! CRITICAL BREACH !!!", (w//2, 50), cv2.FONT_HERSHEY_SIMPLEX, font_size, (0, 0, 255), thickness)
                     ui_color= (0,0,255)
                     
                 elif cx < gate_line_x:
-                    cv2.putText(frame,f"Entered Restricted Area!",(400, 100),cv2.FONT_HERSHEY_COMPLEX,1,(0,0,255),2)
+                    cv2.putText(frame,f"Entered Restricted Area!",(400, 100),cv2.FONT_HERSHEY_COMPLEX,font_size,(0,0,255),thickness)
                     cursor.execute("SELECT id FROM intruders WHERE id = ?",(obj_id,))
                     data = cursor.fetchone()
                     intruder_detected_this_frame = True
@@ -150,9 +153,9 @@ while True:
                 f"{obj_name} | {conf:.2f} | ID:{obj_id}",
                 (x1, y1-10),
                 cv2.FONT_HERSHEY_SIMPLEX,
-                0.5,
+                font_size,
                 color,
-                2
+                thickness
             )
 
     alert_mode = count["person"] > 2
@@ -164,9 +167,9 @@ while True:
             "!!! ALERT: CROWD !!!",
             (w//4, h-50),
             cv2.FONT_HERSHEY_SIMPLEX,
-            1.2,
+            font_size,
             (0,0,255),
-            4
+            thickness
         )
     
 
@@ -182,18 +185,18 @@ while True:
                 f"{key}: {val}",
                 (20, y_val),
                 cv2.FONT_HERSHEY_SIMPLEX,
-                0.8,
+                font_size,
                 txt_color,
-                2
+                thickness
             )
 
             y_val += 35
             
     frame = cv2.addWeighted(overlay, 0.3, frame, 0.7, 0)
    
-    cv2.putText(frame,f"total {len(person_ids)} person enterd in restricted area ",(600, 120),cv2.FONT_HERSHEY_SIMPLEX,0.8,(0,0,255),2)
-    cv2.putText(frame,f"FPS : {int(fps)}",(100,100),cv2.FONT_HERSHEY_SIMPLEX,1.2,(255,0,255),4)
-    cv2.putText(frame,f"{ScreenTimeStamp}",(800,50),cv2.FONT_HERSHEY_SIMPLEX,1.2,(255,255,255),4)
+    cv2.putText(frame,f"total {len(person_ids)} person enterd in restricted area ",(600, 120),cv2.FONT_HERSHEY_SIMPLEX,font_size,(0,0,255),thickness)
+    cv2.putText(frame,f"FPS : {int(fps)}",(100,100),cv2.FONT_HERSHEY_SIMPLEX,font_size,(255,0,255),thickness)
+    cv2.putText(frame,f"{ScreenTimeStamp}",(800,50),cv2.FONT_HERSHEY_SIMPLEX,font_size,(255,255,255),thickness)
     
     if intruder_detected_this_frame :
         if current_intruder_id not in last_log_time or (c_time - last_log_time[current_intruder_id]) > 30 :
