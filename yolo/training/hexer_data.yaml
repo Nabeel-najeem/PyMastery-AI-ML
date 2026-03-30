@@ -1,6 +1,7 @@
-path : ../Hexer_Dataset
+path : C:\Users\najee\Desktop\Python_expert\yolo\training\hexer_data
 train : images/train
 val : images/val
 
 names:
   0:intruder
+  
