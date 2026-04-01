@@ -86,9 +86,9 @@ This repository is a live log of my daily consistency in Python and AI developme
 | **Day 68** | Mar 24 | **Resolution-Independent Rendering:** Engineered a dynamic scaling engine for the OpenCV UI layer. Implemented width-based font and thickness calculation logic to ensure visual consistency across various hardware display outputs on the RTX 2050. |
 | **Day 69** | Mar 27 | **Fault-Tolerant System Architecture:** Implemented a global exception handling layer using try-except-finally blocks. Engineered a guaranteed resource teardown protocol to preserve data integrity during unexpected hardware interrupts on the Asus TUF A15. |
 | **Day 70** | Mar 28 | **Custom Model Training Prep:** Pivoted from UI features to the core Deep Learning pipeline. Engineered the YAML configuration for transfer learning and initialized the training environment for the RTX 2050. |
-| **Day 71** | Mar 29 | **Execution Logic for Model Training:** Engineered the training script for GPU-accelerated transfer learning. Optimized hyperparameters (Epochs/Imgsz) for the RTX 2050 
-| **Day 72** | Mar 31 | **Dataset-Model Integration:** Successfully engineered a 5-sample custom dataset using mobile-captured imagery. Initialized a "Sanity Check" training pipeline on the RTX 2050 to validate YOLO label-image synchronization for the Hexer vision suite 
-| **Day 73** | Apr 1 | **Backend Genesis & API Foundations:** Initialized the "Nervous System" phase using FastAPI. Engineered a basic asynchronous server architecture and successfully verified the first "Hello Hexer" heartbeat via a Uvicorn-hosted local environment 
+| **Day 71** | Mar 29 | **Execution Logic for Model Training:** Engineered the training script for GPU-accelerated transfer learning. Optimized hyperparameters (Epochs/Imgsz) for the RTX 2050 |
+| **Day 72** | Mar 31 | **Dataset-Model Integration:** Successfully engineered a 5-sample custom dataset using mobile-captured imagery. Initialized a "Sanity Check" training pipeline on the RTX 2050 to validate YOLO label-image synchronization for the Hexer vision suite |
+| **Day 73** | Apr 1 | **Backend Genesis & API Foundations:** Initialized the "Nervous System" phase using FastAPI. Engineered a basic asynchronous server architecture and successfully verified the first "Hello Hexer" heartbeat via a Uvicorn-hosted local environment |
 ---
 
 ## 📈 Consistency Tracking
