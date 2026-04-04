@@ -91,6 +91,7 @@ This repository is a live log of my daily consistency in Python and AI developme
 | **Day 73** | Apr 1 | **Backend Genesis & API Foundations:** Initialized the "Nervous System" phase using FastAPI. Engineered a basic asynchronous server architecture and successfully verified the first "Hello Hexer" heartbeat via a Uvicorn-hosted local environment |
 | **Day 74** | Apr 2 | **Hardware Telemetry & OOP Integration:** Engineered a SystemEngine class to bridge the FastAPI backend with local hardware. Successfully implemented real-time RAM monitoring and verified dynamic data output (77.5% load) via the web interface |
 | **Day 75** | Apr 3 | **Data Validation & Pydantic Integration:** Implemented BaseModel schemas for type-safe API responses. Verified successful data routing (200 OK) after debugging initial URI typos |
+| **Day 76** | Apr 4 | **Full-Stack Decoupling:** Successfully implemented Static File mounting and Jinja2 template rendering. Migrated styling to an external CSS file and verified dynamic data injection (RAM Usage) for the Hexer AI Dashboard on the RTX 2050 |
 ---
 
 ## 📈 Consistency Tracking
