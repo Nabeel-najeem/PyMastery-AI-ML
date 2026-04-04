@@ -1,0 +1,13 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background: black;
+    color: white;
+    text-align: center;
+    font-size: 30px;
+}
+.container{
+    margin-top: 50px;
+}
+.data{
+    font-size: 20px;
+}
