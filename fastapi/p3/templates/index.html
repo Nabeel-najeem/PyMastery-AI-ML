@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexer Ai dashboard</title>
+    <link rel="stylesheet" href="{{ request.url_for('static', path='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Hexer Services</h1>
+        <div class="data">user : <strong>{{ user_name }}</strong></div>
+        <div class="data">college : <strong>{{ college }}</strong></div>
+        <div class="data">RAM Usage : <strong>{{ ram_usage }}</strong></div>
+        
+    </div>
+    
+</body>
+</html>
