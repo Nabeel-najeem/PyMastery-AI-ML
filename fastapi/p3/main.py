@@ -17,6 +17,9 @@ async def home(request: Request):
     net_io = psutil.net_io_counters()
     net_sent = f"{net_io.bytes_sent / (1024**2):.2f} MB"
     net_recv = f"{net_io.bytes_recv / (1024**2):.2f} MB"
+    disk = psutil.disk_usage('/')
+    disk_total = f"{disk.total / (1024**3):.2f} GB"
+    disk_free = f"{disk.free / (1024**3):.2f} GB"
     
     
     return templates.TemplateResponse(
@@ -29,6 +32,9 @@ async def home(request: Request):
             "cpu_frequency": cpu_frequency,
             "Disk_usage": Disk_usage,
             "net_sent": net_sent,
-            "net_recv": net_recv
+            "net_recv": net_recv,
+            "disk_total": disk_total,
+            "disk_free": disk_free
+            
         }
     )
