@@ -2,6 +2,7 @@ from fastapi import FastAPI,Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from datetime import datetime
 import psutil
 
 app = FastAPI()
@@ -20,6 +21,9 @@ async def home(request: Request):
     disk = psutil.disk_usage('/')
     disk_total = f"{disk.total / (1024**3):.2f} GB"
     disk_free = f"{disk.free / (1024**3):.2f} GB"
+    boot_time_timestap = psutil.boot_time()
+    bt = datetime.fromtimestamp(boot_time_timestap)
+    system_boot_time =bt.strftime("%Y-%m-%d %H:%M:%S")
     
     
     return templates.TemplateResponse(
@@ -34,7 +38,8 @@ async def home(request: Request):
             "net_sent": net_sent,
             "net_recv": net_recv,
             "disk_total": disk_total,
-            "disk_free": disk_free
+            "disk_free": disk_free,
+            "system_boot_time": system_boot_time
             
         }
     )
