@@ -24,6 +24,8 @@ async def home(request: Request):
     boot_time_timestap = psutil.boot_time()
     bt = datetime.fromtimestamp(boot_time_timestap)
     system_boot_time =bt.strftime("%Y-%m-%d %H:%M:%S")
+    physical_cores = psutil.cpu_count(logical=False)
+    total_threads = psutil.cpu_count(logical=True)
     
     
     return templates.TemplateResponse(
@@ -39,7 +41,9 @@ async def home(request: Request):
             "net_recv": net_recv,
             "disk_total": disk_total,
             "disk_free": disk_free,
-            "system_boot_time": system_boot_time
+            "system_boot_time": system_boot_time,
+            "physical_cores": physical_cores,
+            "total_threads": total_threads
             
         }
     )
