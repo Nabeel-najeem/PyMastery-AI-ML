@@ -26,6 +26,7 @@ async def home(request: Request):
     system_boot_time =bt.strftime("%Y-%m-%d %H:%M:%S")
     physical_cores = psutil.cpu_count(logical=False)
     total_threads = psutil.cpu_count(logical=True)
+    cpu_per_core = psutil.cpu_percent(interval=None, percpu=True)
     
     
     return templates.TemplateResponse(
