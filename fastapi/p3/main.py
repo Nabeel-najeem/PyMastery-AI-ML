@@ -27,6 +27,10 @@ async def home(request: Request):
     physical_cores = psutil.cpu_count(logical=False)
     total_threads = psutil.cpu_count(logical=True)
     cpu_per_core = psutil.cpu_percent(interval=None, percpu=True)
+    battery = psutil.sensors_battery()
+    percentage = battery.percent if battery else "N/A"
+    pluged = "pluged in" if battery and battery.power_plugged else "on battery"
+    
     
     
     return templates.TemplateResponse(
@@ -44,7 +48,8 @@ async def home(request: Request):
             "disk_free": disk_free,
             "system_boot_time": system_boot_time,
             "physical_cores": physical_cores,
-            "total_threads": total_threads
-            
+            "total_threads": total_threads,
+            "cpu_per_core": cpu_per_core,
+            "battery_status": f"{percentage}% ({pluged})"
         }
     )
