@@ -7,3 +7,10 @@ venv/
 .idea/
 yolov8n.pt
 et --hard b0c002e
+yolo/basic/intruders
+fastapi/p4/frontend/node_modules/
+/yolo/training
+
+yolo/basic/tezt.py
+all.txt
+yolo/basic/hexer_security.db

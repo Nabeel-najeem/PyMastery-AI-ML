@@ -13,3 +13,7 @@ async def sattus():
         "Colleeg" : "MUsaliar",
         "Status" : "Ready for Ai"
         }
+
+
+
+
