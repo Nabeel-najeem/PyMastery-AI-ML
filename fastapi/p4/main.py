@@ -4,7 +4,6 @@ from database import Session,engine
 import database_model
 from sqlalchemy.orm import Session as dbsession
 
-
 app = FastAPI()
 
 database_model.Base.metadata.create_all(bind = engine)
@@ -13,8 +12,7 @@ products = [
     product(id=1,product_name="phone",description= "budget phone",price = 20000.0,quantity=10),
     product(id=2,product_name="laptop",description= "budget laptop",price = 45000.0,quantity=12),
     product(id=3,product_name="fan",description= "budget fan",price = 7000.0,quantity=9),
-    product(id=4,product_name="car",description= "budget car",price = 200000.0,quantity=7),
-    
+    product(id=4,product_name="car",description= "budget car",price = 200000.0,quantity=7),   
 ]
 
 def get_db():
@@ -23,9 +21,6 @@ def get_db():
         yield db
     finally :
         db.close()
-
-
-
 
 def init_db():
     
@@ -37,7 +32,6 @@ def init_db():
         db.commit()
     
 init_db()
-
 
 @app.get("/")
 def greet():
@@ -62,7 +56,6 @@ def add_product(product : product, db : dbsession = Depends(get_db)):
     db.commit()
     return product
 
-
 @app.put("/product")
 def update_product(id : int , product : product, db : dbsession = Depends(get_db)):
     db_product = db.query(database_model.product).filter(database_model.product.id == id).first()
@@ -86,5 +79,3 @@ def del_product(id :int, db : dbsession = Depends(get_db)):
     else :
         return "product not found"
         
-
-
