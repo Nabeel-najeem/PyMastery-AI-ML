@@ -11,7 +11,7 @@ function App() {
   const [products, setProducts] = useState([]);
   const [form, setForm] = useState({
     id: "",
-    name: "",
+    product_name: "",
     description: "",
     price: "",
     quantity: "",
@@ -144,7 +144,7 @@ function App() {
         });
         setMessage("Product updated successfully");
       } else {
-        await api.post("/products/", {
+        await api.post("/products", {
           ...form,
           id: Number(form.id),
           price: Number(form.price),
@@ -164,7 +164,7 @@ function App() {
   const handleEdit = (product) => {
     setForm({
       id: product.id,
-      name: product.name,
+      product_name: product.product_name,
       description: product.description,
       price: product.price,
       quantity: product.quantity,
@@ -236,7 +236,7 @@ function App() {
               />
               <input
                 type="text"
-                name="name"
+                name="product_name"
                 placeholder="Name"
                 value={form.name}
                 onChange={handleChange}
@@ -333,7 +333,7 @@ function App() {
                     {filteredProducts.map((p) => (
                       <tr key={p.id}>
                         <td>{p.id}</td>
-                        <td className="name-cell">{p.name}</td>
+                        <td className="name-cell">{p.product_name}</td>
                         <td className="desc-cell" title={p.description}>{p.description}</td>
                         <td className="price-cell">${currency(p.price)}</td>
                         <td>
