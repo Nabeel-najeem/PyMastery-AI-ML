@@ -99,6 +99,7 @@ This repository is a live log of my daily consistency in Python and AI developme
 | **Day 81** | Apr 9 | **Multi-Core Architecture Mapping:** Integrated cpu_count telemetry. Engineered logic to differentiate between physical cores and logical threads for future AI parallel processing |
 | **Day 82** | Apr 10 | **Granular CPU Analytics:** Engineered per-core load monitoring using psutil. Implemented Jinja2 loop logic to visualize individual thread utilization for the Hexer Services dashboard |
 | **Day 83** | Apr 11 | **Power Telemetry Integration:** Engineered battery health monitoring using psutil.sensors_battery. Integrated charge state and percentage tracking into the live Hexer UI |
+| **Day 84 - 89** | Apr 12 - Apr 17 | **Full-Stack Postgres & React Integration:** Evaluated decoupled architectures and migrated from SQLite to a production-grade PostgreSQL backend. Engineered Pydantic validation schemas, SQLAlchemy ORM models, and core FastAPI CRUD endpoints. Successfully connected a React presentation layer using CORS middleware for full-stack data flow |
 ---
 
 ## 📈 Consistency Tracking
