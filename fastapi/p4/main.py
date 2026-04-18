@@ -44,26 +44,28 @@ init_db()
 @app.get("/")
 def greet():
     return "Welcome to my shope"
-
+#get all products
 @app.get("/products")
 def all_products(db : dbsession = Depends(get_db)):
     
     db_products = db.query(database_model.product).all()
     return db_products
-
+#fetch product by id
 @app.get("/product/{id}")
 def get_product_id(id : int, db : dbsession = Depends(get_db)):
     db_product = db.query(database_model.product).filter(database_model.product.id == id).first()
     if db_product :
         return db_product
     return "product not found"
-        
+
+#add new product     
 @app.post("/products")
 def add_product(product : product, db : dbsession = Depends(get_db)):
     db.add(database_model.product(**product.model_dump()))
     db.commit()
     return product
 
+#update product by id
 @app.put("/products/{id}")
 def update_product(id : int , product : product, db : dbsession = Depends(get_db)):
     db_product = db.query(database_model.product).filter(database_model.product.id == id).first()
@@ -76,7 +78,8 @@ def update_product(id : int , product : product, db : dbsession = Depends(get_db
         return "product updated sussefully"  
     else :
         return "No product found"
-        
+   
+#delete product by id
 @app.delete("/products/{id}")
 def del_product(id :int, db : dbsession = Depends(get_db)):
     db_product = db.query(database_model.product).filter(database_model.product.id == id).first()
@@ -86,4 +89,4 @@ def del_product(id :int, db : dbsession = Depends(get_db)):
         return "product deleted sucesfully"  
     else :
         return "product not found"
-        
+    
